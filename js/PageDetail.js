@@ -1,7 +1,8 @@
-const PageDetail = (argument) => {
+import { API_KEY } from "../env";
+ const PageDetail = (argument) => {
     const preparePage = () => {
       const cleanedArgument = argument.trim().replace(/\s+/g, "-");
-  
+
       const displayGame = (gameData) => {
         const { name, released, description } = gameData;
         const articleDOM = document.querySelector(".page-detail .article");
@@ -9,18 +10,18 @@ const PageDetail = (argument) => {
         articleDOM.querySelector("p.release-date span").innerHTML = released;
         articleDOM.querySelector("p.description").innerHTML = description;
       };
-  
+
       const fetchGame = (url, argument) => {
-        fetch(`https://api.rawg.io/8240f77a189d4a84a4252ccdf4314e5d/games`)
+        fetch(`${url}/${argument}?key=${API_KEY}`)
           .then((response) => response.json())
           .then((responseData) => {
             displayGame(responseData);
           });
       };
-  
+
       fetchGame('https://api.rawg.io/api/games', cleanedArgument);
     };
-  
+
     const render = () => {
       pageContent.innerHTML = `
         <section class="page-detail">
@@ -31,9 +32,10 @@ const PageDetail = (argument) => {
           </div>
         </section>
       `;
-  
+
       preparePage();
     };
-  
+
     render();
   };
+export {PageDetail};
